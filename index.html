@@ -4,16 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PH-TUBE</title>
+    <!-- tailwind and daisyUi cdn -->
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@5"
       rel="stylesheet"
       type="text/css"
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .inter-font { font-family: "Inter", sans-serif; font-style: normal; }
+    </style>
   </head>
-  <body>
+  <body class="inter-font">
     <!-- header section -->
-    <header class="w-11/12  mx-auto mt-5">
+    <header class="w-11/12 mx-auto mt-5">
       <nav
         class="flex justify-between items-center border-b-2 border-gray-200 py-8"
       >
@@ -23,7 +35,9 @@
         </div>
         <!-- sort btn -->
         <div class="sort-btn">
-          <button class="btn">Sort by view</button>
+          <button class="btn hover:bg-red-500 hover:text-white">
+            Sort by view
+          </button>
         </div>
         <!-- blog btn -->
         <div class="blog-btn">
@@ -35,13 +49,14 @@
     </header>
 
     <!-- main section -->
-    <main class="w-11/12 mx-auto mt-5">
-      <div id="category-container" class="flex justify-center gap-3">
+    <main class="w-11/12 mx-auto mt-8">
+      <section id="category-container" class="flex justify-center gap-3">
         <div>
-            <button class="btn btn-sm bg-red-500 text-white">All</button>
+          <button class="btn btn-sm bg-red-500 text-white">All</button>
         </div>
-        
-      </div>
+      </section>
+
+      <section id="videos-container" class="grid grid-cols-4 gap-5 mt-10"></section>
     </main>
 
     <script src="scripts/index.js"></script>
