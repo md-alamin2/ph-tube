@@ -1,3 +1,9 @@
+const removeActive = () => {
+  const activeBtn = document.getElementsByClassName("active");
+  for (let btn of activeBtn) {
+    btn.classList.remove("active");
+  }
+};
 // implement category btn api
 const loadCategories = () => {
   // fetch the data
@@ -13,47 +19,40 @@ const displayCategories = (categoriesArr) => {
   const categoryContainer = document.getElementById("category-container");
 
   // loop operation on categoriesArr
-  for (category of categoriesArr) {
+  for (let category of categoriesArr) {
     // create element
     const categoryDiv = document.createElement("div");
     categoryDiv.innerHTML = `
-        <button class="btn btn-sm hover:bg-red-500 hover:text-white">${category.category}</button>
+        <button id="btn-${category.category_id}" onclick="loadCategoriesVideo(${category.category_id})" class="btn btn-sm hover:bg-red-500 hover:text-white">${category.category}</button>
         `;
     // append element
     categoryContainer.appendChild(categoryDiv);
   }
 };
 
-// {
-//     "category_id": "1001",
-//     "video_id": "aaaa",
-//     "thumbnail": "https://i.ibb.co/L1b6xSq/shape.jpg",
-//     "title": "Shape of You",
-//     "authors": [
-//         {
-//             "profile_picture": "https://i.ibb.co/D9wWRM6/olivia.jpg",
-//             "profile_name": "Olivia Mitchell",
-//             "verified": ""
-//         }
-//     ],
-//     "others": {
-//         "views": "100K",
-//         "posted_date": "16278"
-//     },
-//     "description": "Dive into the rhythm of 'Shape of You,' a captivating track that blends pop sensibilities with vibrant beats. Created by Olivia Mitchell, this song has already gained 100K views since its release. With its infectious melody and heartfelt lyrics, 'Shape of You' is perfect for fans looking for an uplifting musical experience. Let the music take over as Olivia's vocal prowess and unique style create a memorable listening journey."
-// }
-
 // implement video api
-const loadVideos = () => {
-  fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+const loadVideos = (searchText = "") => {
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((res) => res.json())
-    .then((data) => displayVideos(data.videos));
+    .then((data) => {
+      removeActive();
+      document.getElementById("btn-all").classList.add("active");
+      displayVideos(data.videos);
+    });
 };
 
 const displayVideos = (videos) => {
   const videosContainer = document.getElementById("videos-container");
+  videosContainer.innerHTML = "";
+  if (videos.length == 0) {
+    videosContainer.innerHTML = `
+    <div class="col-span-4 mt-44">
+        <img class="w-fit mx-auto" src="assets/Icon.png" alt=""/>
+        <h2 class="text-3xl font-bold text-center mt-2">Oops!! Sorry, There is no content here</h2>
+    </div>
+    `;
+  }
   videos.forEach((video) => {
-    console.log(video);
     const videoCard = document.createElement("div");
     videoCard.innerHTML = `
         <div class="card bg-base-10 shadow-sm">
@@ -80,18 +79,58 @@ const displayVideos = (videos) => {
 
               <div class="flex items-center gap-1">
                 <p class="text-sm text-[#17171770]">${video.authors[0].profile_name}</p>
-                <img src="assets/verified.png" alt="">
+                ${video.authors[0].verified == true? `<img src="assets/verified.png" alt="">` : ``}
               </div>
 
               <p class="text-sm text-[#17171770]">${video.others.views}</p>
 
             </div>
           </div>
-        </div>
-        `;
+          <button onclick="videoDetails('${video.video_id}')" class="btn btn-wide mx-auto mb-3 active">Show details</button>
+          </div>
+          `;
     videosContainer.appendChild(videoCard);
   });
 };
+
+const loadCategoriesVideo = (id) => {
+  const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      removeActive();
+      const clickedBtn = document.getElementById(`btn-${id}`);
+      clickedBtn.classList.add("active");
+      displayVideos(data.category);
+    });
+};
+// video showing function
+const videoDetails = (videoId) => {
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`)
+    .then((res) => res.json())
+    .then((data) => displayVideoDetails(data.video));
+};
+const displayVideoDetails = (video) => {
+  document.getElementById("show_details").showModal();
+  const detailsContainer = document.getElementById("details-container");
+  detailsContainer.innerHTML = `
+  <div class="card bg-base-100 image-full shadow-sm">
+  <figure>
+    <img
+      src="${video.thumbnail}"
+      alt="Shoes" />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">${video.title}</h2>
+    <p>${video.description}</p>
+  </div>
+</div>
+  `
+};
+document.getElementById("input-item").addEventListener("keyup", (event)=>{
+  const input = event.target.value;
+  loadVideos(input);
+})
 
 loadCategories();
 loadVideos();
