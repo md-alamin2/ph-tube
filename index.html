@@ -37,7 +37,7 @@
         class="flex justify-between items-center border-b-2 border-gray-200 py-8"
       >
         <!-- logo -->
-        <div class="logo">
+        <div class="logo w-full">
           <img class="w-[140px]" src="assets/Logo.png" alt="logo" />
         </div>
         <!-- sort btn -->
@@ -46,7 +46,7 @@
           <input id="input-item" type="search" required placeholder="Search"/>
         </label>
         <!-- blog btn -->
-        <div class="blog-btn">
+        <div class="blog-btn hidden md:block">
           <button class="btn bg-red-500 text-white hover:bg-red-600">
             Sort by view
           </button>
@@ -56,6 +56,7 @@
 
     <!-- main section -->
     <main class="w-11/12 mx-auto mt-8">
+      <!-- category button container -->
       <section id="category-container" class="flex justify-center gap-3">
         <div>
           <button id="btn-all" onclick="loadVideos()" class="btn btn-sm active">
@@ -64,9 +65,10 @@
         </div>
       </section>
 
+      <!-- video container -->
       <section
         id="videos-container"
-        class="grid grid-cols-4 gap-5 mt-10"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-10"
       ></section>
 
       <!-- Open the modal using ID.showModal() method -->

@@ -46,7 +46,7 @@ const displayVideos = (videos) => {
   videosContainer.innerHTML = "";
   if (videos.length == 0) {
     videosContainer.innerHTML = `
-    <div class="col-span-4 mt-44">
+    <div class="col-span-4 mt-5 lg:mt-44">
         <img class="w-fit mx-auto" src="assets/Icon.png" alt=""/>
         <h2 class="text-3xl font-bold text-center mt-2">Oops!! Sorry, There is no content here</h2>
     </div>
